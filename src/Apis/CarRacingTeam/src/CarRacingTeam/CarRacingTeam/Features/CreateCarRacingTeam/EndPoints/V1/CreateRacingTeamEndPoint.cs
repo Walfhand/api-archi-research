@@ -2,30 +2,28 @@
 using CarRacingTeam.CarRacingTeam.Features.CreateCarRacingTeam.Commands.V1;
 using Engine.Web;
 using MediatR;
-using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
-using Swashbuckle.AspNetCore.Annotations;
 
 namespace CarRacingTeam.CarRacingTeam.Features.CreateCarRacingTeam.EndPoints.V1;
 public class CreateRacingTeamEndPoint : IMinimalEndpoint
 {
     public IEndpointRouteBuilder MapEndpoint(IEndpointRouteBuilder builder)
     {
-        builder.MapPost($"{EndpointPath.BaseApiPath}/car-racing-team", CreateCarRacingTeam)
-            .WithTags("CarRacingTeam")
-            .WithName(nameof(CreateCarRacingTeam))
-            .WithMetadata(new SwaggerOperationAttribute("Create Car Racing Team", ""))
-            .WithApiVersionSet(builder.NewApiVersionSet("CarRacingTeam").Build())
+        builder.CreateEndpoint(MinimalApiExtensions.EndpointType.Post,
+            $"{EndpointPath.BaseApiPath}/car-racing-teams",
+            CreateCarRacingTeam,
+            nameof(CreateCarRacingTeam),
+            "Create Car Racing Team",
+            "CarRacingTeams")
             .Produces<CreateCarRacingTeamCommand>()
-            .Produces(StatusCodes.Status400BadRequest)
-            .HasApiVersion(1.0);
+            .Produces(StatusCodes.Status400BadRequest);
 
         return builder;
     }
 
-    public static async Task<IResult> CreateCarRacingTeam(CreateCarRacingTeamCommand command, IMediator mediator, IMapper mapper, CancellationToken cancellationToken)
-    {
-        return Results.Ok(await mediator.Send(command, cancellationToken));
-    }
+    public static async Task<IResult> CreateCarRacingTeam([FromBody] CreateCarRacingTeamCommand command, 
+        IMediator mediator, IMapper mapper, CancellationToken cancellationToken)
+       => Results.Ok(await mediator.Send(command, cancellationToken));
 }
