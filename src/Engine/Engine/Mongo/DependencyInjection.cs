@@ -17,14 +17,14 @@ public static class DependencyInjection
             where TContextService : IMongoDbContext
             where TContextImplementation : MongoDbContext, TContextService
     {
-        services.Configure<MongoOptions>(configuration.GetSection(nameof(MongoOptions)));
+        services.Configure<MongoOptions>(configuration.GetSection(MongoOptions.Mongo));
         if (configurator is { })
         {
             services.Configure(nameof(MongoOptions), configurator);
         }
         else
         {
-            services.AddOptions<MongoOptions>().Bind(configuration.GetSection(nameof(MongoOptions)))
+            services.AddOptions<MongoOptions>().Bind(configuration.GetSection(MongoOptions.Mongo))
                 .ValidateDataAnnotations();
         }
 

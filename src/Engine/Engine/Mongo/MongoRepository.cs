@@ -1,13 +1,24 @@
 ﻿using Engine.Core.Model;
+using MongoDB.Driver;
 using System.Linq.Expressions;
 
 namespace Engine.Mongo;
 public class MongoRepository<TEntity, TId> : IMongoRepository<TEntity, TId>
      where TEntity : class, IAggregateRoot<TId>
 {
-    public Task<TEntity> AddAsync(TEntity entity, CancellationToken cancellationToken = default)
+    private readonly IMongoDbContext _context;
+    protected readonly IMongoCollection<TEntity> DbSet;
+
+    public MongoRepository(IMongoDbContext context)
     {
-        throw new NotImplementedException();
+        _context = context;
+        DbSet = _context.GetCollection<TEntity>();
+    }
+
+    public async Task<TEntity> AddAsync(TEntity entity, CancellationToken cancellationToken = default)
+    {
+        await DbSet.InsertOneAsync(entity, new InsertOneOptions(), cancellationToken);
+        return entity;
     }
 
     public Task DeleteAsync(Expression<Func<TEntity, bool>> predicate, CancellationToken cancellationToken = default)
@@ -32,7 +43,7 @@ public class MongoRepository<TEntity, TId> : IMongoRepository<TEntity, TId>
 
     public void Dispose()
     {
-        throw new NotImplementedException();
+        _context?.Dispose();
     }
 
     public Task<IReadOnlyList<TEntity>> FindAsync(Expression<Func<TEntity, bool>> predicate, CancellationToken cancellationToken = default)

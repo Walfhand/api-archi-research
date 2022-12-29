@@ -19,6 +19,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CarRacingTeam", "src\Apis\C
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CarRacingTeam.Api", "src\Apis\CarRacingTeam\src\CarRacingTeam.Api\CarRacingTeam.Api.csproj", "{24BF9FD7-A112-47D0-9E6C-D6DCFE950A24}"
 EndProject
+Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{A7FC8DEE-39C2-43D1-B590-5FB4BBCB79F5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -37,6 +39,10 @@ Global
 		{24BF9FD7-A112-47D0-9E6C-D6DCFE950A24}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{24BF9FD7-A112-47D0-9E6C-D6DCFE950A24}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{24BF9FD7-A112-47D0-9E6C-D6DCFE950A24}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A7FC8DEE-39C2-43D1-B590-5FB4BBCB79F5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A7FC8DEE-39C2-43D1-B590-5FB4BBCB79F5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A7FC8DEE-39C2-43D1-B590-5FB4BBCB79F5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A7FC8DEE-39C2-43D1-B590-5FB4BBCB79F5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -49,6 +55,7 @@ Global
 		{AC1968EE-5270-40CB-8D1D-FB239BAAD962} = {7A3D968B-C7BA-4232-9973-72EB05C2C73F}
 		{5A3FA2D1-5C5A-4175-ADFF-4602A8E20389} = {AC1968EE-5270-40CB-8D1D-FB239BAAD962}
 		{24BF9FD7-A112-47D0-9E6C-D6DCFE950A24} = {AC1968EE-5270-40CB-8D1D-FB239BAAD962}
+		{A7FC8DEE-39C2-43D1-B590-5FB4BBCB79F5} = {AC1968EE-5270-40CB-8D1D-FB239BAAD962}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {24607490-CBB2-4BA7-B95C-4AFBA41590C2}

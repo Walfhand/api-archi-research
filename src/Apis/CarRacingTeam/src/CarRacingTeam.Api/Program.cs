@@ -8,7 +8,7 @@ builder.Services.AddControllers();
 
 builder.Services.AddCustomSwagger();
 builder.Services.AddCustomVersioning();
-builder.Services.AddInfrastructure();
+builder.Services.AddInfrastructure(builder.Configuration);
 builder.Services.AddMinimalEndpoints();
 
 var app = builder.Build();
