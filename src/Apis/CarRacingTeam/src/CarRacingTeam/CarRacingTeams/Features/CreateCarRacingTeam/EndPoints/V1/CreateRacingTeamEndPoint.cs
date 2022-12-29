@@ -1,12 +1,12 @@
 ﻿using AutoMapper;
-using CarRacingTeam.CarRacingTeam.Features.CreateCarRacingTeam.Commands.V1;
+using CarRacingTeam.CarRacingTeams.Features.CreateCarRacingTeam.Commands.V1;
 using Engine.Web;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
 
-namespace CarRacingTeam.CarRacingTeam.Features.CreateCarRacingTeam.EndPoints.V1;
+namespace CarRacingTeam.CarRacingTeams.Features.CreateCarRacingTeam.EndPoints.V1;
 public class CreateRacingTeamEndPoint : IMinimalEndpoint
 {
     public IEndpointRouteBuilder MapEndpoint(IEndpointRouteBuilder builder)
@@ -23,7 +23,7 @@ public class CreateRacingTeamEndPoint : IMinimalEndpoint
         return builder;
     }
 
-    public static async Task<IResult> CreateCarRacingTeam([FromBody] CreateCarRacingTeamCommand command, 
+    public static async Task<IResult> CreateCarRacingTeam([FromBody] CreateCarRacingTeamCommand command,
         IMediator mediator, IMapper mapper, CancellationToken cancellationToken)
        => Results.Ok(await mediator.Send(command, cancellationToken));
 }

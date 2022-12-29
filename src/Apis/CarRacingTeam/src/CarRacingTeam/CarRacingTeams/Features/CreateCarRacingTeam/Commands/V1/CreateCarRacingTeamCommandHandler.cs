@@ -1,6 +1,6 @@
 ﻿using MediatR;
 
-namespace CarRacingTeam.CarRacingTeam.Features.CreateCarRacingTeam.Commands.V1;
+namespace CarRacingTeam.CarRacingTeams.Features.CreateCarRacingTeam.Commands.V1;
 public class CreateCarRacingTeamCommandHandler : IRequestHandler<CreateCarRacingTeamCommand>
 {
     public async Task<Unit> Handle(CreateCarRacingTeamCommand request, CancellationToken cancellationToken)

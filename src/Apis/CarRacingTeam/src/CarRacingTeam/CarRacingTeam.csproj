@@ -17,4 +17,8 @@
     <ProjectReference Include="..\..\..\..\Engine\Engine\Engine.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Staffs\" />
+  </ItemGroup>
+
 </Project>
