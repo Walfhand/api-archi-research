@@ -40,14 +40,18 @@ public class MongoDbContext : IMongoDbContext
         throw new NotImplementedException();
     }
 
-    public Task BeginTransactionAsync(CancellationToken cancellationToken = default)
+    public async Task BeginTransactionAsync(CancellationToken cancellationToken = default)
     {
-        throw new NotImplementedException();
+        Session = await MongoClient.StartSessionAsync(cancellationToken: cancellationToken);
+        Session.StartTransaction();
     }
 
-    public Task CommitTransactionAsync(CancellationToken cancellationToken = default)
+    public async Task CommitTransactionAsync(CancellationToken cancellationToken = default)
     {
-        throw new NotImplementedException();
+        if (Session is { IsInTransaction: true })
+            await Session.CommitTransactionAsync(cancellationToken);
+
+        Session?.Dispose();
     }
 
     public void Dispose()
@@ -63,10 +67,8 @@ public class MongoDbContext : IMongoDbContext
         return Database.GetCollection<T>(name ?? typeof(T).Name.ToLower());
     }
 
-    public Task RollbackTransaction(CancellationToken cancellationToken = default)
-    {
-        throw new NotImplementedException();
-    }
+    public async Task RollbackTransaction(CancellationToken cancellationToken = default)
+        => await Session?.AbortTransactionAsync(cancellationToken)!;
 
     public Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
     {
