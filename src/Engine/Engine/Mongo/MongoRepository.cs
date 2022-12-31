@@ -1,5 +1,6 @@
 ﻿using Engine.Core.Model;
 using MongoDB.Driver;
+using SharpCompress.Common;
 using System.Linq.Expressions;
 
 namespace Engine.Mongo;
@@ -18,61 +19,44 @@ public class MongoRepository<TEntity, TId> : IMongoRepository<TEntity, TId>
     public async Task<TEntity> AddAsync(TEntity entity, CancellationToken cancellationToken = default)
     {
         await DbSet.InsertOneAsync(entity, new InsertOneOptions(), cancellationToken);
+        _context.AddToTracker(entity);
         return entity;
     }
 
     public Task DeleteAsync(Expression<Func<TEntity, bool>> predicate, CancellationToken cancellationToken = default)
-    {
-        throw new NotImplementedException();
-    }
+        => DbSet.DeleteOneAsync(predicate, cancellationToken);
 
-    public Task DeleteAsync(TEntity entity, CancellationToken cancellationToken = default)
+    public async Task DeleteAsync(TEntity entity, CancellationToken cancellationToken = default)
     {
-        throw new NotImplementedException();
+        await DbSet.DeleteOneAsync(e => e.Id.Equals(entity.Id), cancellationToken);
+        _context.AddToTracker(entity);
     }
 
     public Task DeleteByIdAsync(TId id, CancellationToken cancellationToken = default)
-    {
-        throw new NotImplementedException();
-    }
+        => DbSet.DeleteOneAsync(e => e.Id.Equals(id), cancellationToken);
 
     public Task DeleteRangeAsync(IReadOnlyList<TEntity> entities, CancellationToken cancellationToken = default)
-    {
-        throw new NotImplementedException();
-    }
+        => DbSet.DeleteOneAsync(e => entities.Any(i => e.Id.Equals(i.Id)), cancellationToken);
 
     public void Dispose()
-    {
-        _context?.Dispose();
-    }
+        => _context?.Dispose();
 
-    public Task<IReadOnlyList<TEntity>> FindAsync(Expression<Func<TEntity, bool>> predicate, CancellationToken cancellationToken = default)
-    {
-        throw new NotImplementedException();
-    }
+    public async Task<IReadOnlyList<TEntity>> FindAsync(Expression<Func<TEntity, bool>> predicate, CancellationToken cancellationToken = default)
+        => await DbSet.Find(predicate).ToListAsync(cancellationToken: cancellationToken)!;
 
-    public Task<TEntity?> FindByIdAsync(TId id, CancellationToken cancellationToken = default)
-    {
-        throw new NotImplementedException();
-    }
+    public async Task<TEntity?> FindByIdAsync(TId id, CancellationToken cancellationToken = default)
+        => await FindOneAsync(e => e.Id.Equals(id), cancellationToken);
 
-    public Task<TEntity?> FindOneAsync(Expression<Func<TEntity, bool>> predicate, CancellationToken cancellationToken = default)
-    {
-        throw new NotImplementedException();
-    }
+    public async Task<TEntity?> FindOneAsync(Expression<Func<TEntity, bool>> predicate, CancellationToken cancellationToken = default)
+        => await DbSet.Find(predicate).SingleOrDefaultAsync(cancellationToken: cancellationToken)!;
 
-    public Task<IReadOnlyList<TEntity>> GetAllAsync(CancellationToken cancellationToken = default)
-    {
-        throw new NotImplementedException();
-    }
+    public async Task<IReadOnlyList<TEntity>> GetAllAsync(CancellationToken cancellationToken = default)
+        => await DbSet.AsQueryable().ToListAsync(cancellationToken);
 
-    public Task<IReadOnlyList<TEntity>> RawQuery(string query, CancellationToken cancellationToken = default, params object[] queryParams)
+    public async Task<TEntity> UpdateAsync(TEntity entity, CancellationToken cancellationToken = default)
     {
-        throw new NotImplementedException();
-    }
-
-    public Task<TEntity> UpdateAsync(TEntity entity, CancellationToken cancellationToken = default)
-    {
-        throw new NotImplementedException();
+        await DbSet.ReplaceOneAsync(e => e.Id.Equals(entity.Id), entity, new ReplaceOptions(), cancellationToken);
+        _context.AddToTracker(entity);
+        return entity;
     }
 }

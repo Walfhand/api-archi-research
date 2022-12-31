@@ -1,12 +1,12 @@
-﻿using MongoDB.Driver;
+﻿using Engine.Core.Event;
+using Engine.Core.Model;
+using MongoDB.Driver;
 
 namespace Engine.Mongo;
 public interface IMongoDbContext : IDisposable
 {
     IMongoCollection<T> GetCollection<T>(string? name = null);
-    Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
-    Task BeginTransactionAsync(CancellationToken cancellationToken = default);
-    Task CommitTransactionAsync(CancellationToken cancellationToken = default);
-    Task RollbackTransaction(CancellationToken cancellationToken = default);
+    void AddToTracker(IAggregateRoot aggregateRoot);
+    IEnumerable<IDomainEvent> GetDomainEvents();
     void AddCommand(Func<Task> func);
 }

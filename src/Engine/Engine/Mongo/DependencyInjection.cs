@@ -30,11 +30,9 @@ public static class DependencyInjection
 
         services.AddScoped(typeof(TContextService), typeof(TContextImplementation));
         services.AddScoped(typeof(TContextImplementation));
-
         services.AddScoped<IMongoDbContext>(sp => sp.GetRequiredService<TContextService>());
 
         services.AddTransient(typeof(IMongoRepository<,>), typeof(MongoRepository<,>));
-        services.AddTransient(typeof(IMongoUnitOfWork<>), typeof(MongoUnitOfWork<>));
 
         return services;
     }

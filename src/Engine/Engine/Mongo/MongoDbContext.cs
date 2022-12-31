@@ -1,8 +1,8 @@
-﻿using Microsoft.Extensions.Options;
+﻿using Engine.Core.Event;
+using Engine.Core.Model;
+using Microsoft.Extensions.Options;
 using MongoDB.Bson;
-using MongoDB.Bson.Serialization;
 using MongoDB.Bson.Serialization.Conventions;
-using MongoDB.Bson.Serialization.Serializers;
 using MongoDB.Driver;
 
 namespace Engine.Mongo;
@@ -11,12 +11,12 @@ public class MongoDbContext : IMongoDbContext
     public IClientSessionHandle? Session { get; set; }
     public IMongoDatabase Database { get; }
     public IMongoClient MongoClient { get; }
+    private readonly List<IAggregateRoot> _changeTracker = new();
 
     protected readonly IList<Func<Task>> _commands;
     public MongoDbContext(IOptions<MongoOptions> options)
     {
         RegisterConventions();
-        BsonSerializer.RegisterSerializer(new GuidSerializer(BsonType.String));
         MongoClient = new MongoClient(options.Value.ConnectionString);
 
         Database = MongoClient.GetDatabase(options.Value.DatabaseName);
@@ -40,25 +40,11 @@ public class MongoDbContext : IMongoDbContext
         throw new NotImplementedException();
     }
 
-    public async Task BeginTransactionAsync(CancellationToken cancellationToken = default)
-    {
-        Session = await MongoClient.StartSessionAsync(cancellationToken: cancellationToken);
-        Session.StartTransaction();
-    }
-
-    public async Task CommitTransactionAsync(CancellationToken cancellationToken = default)
-    {
-        if (Session is { IsInTransaction: true })
-            await Session.CommitTransactionAsync(cancellationToken);
-
-        Session?.Dispose();
-    }
-
     public void Dispose()
     {
         while (Session is { IsInTransaction: true })
             Thread.Sleep(TimeSpan.FromMilliseconds(100));
-
+        _changeTracker.Clear();
         GC.SuppressFinalize(this);
     }
 
@@ -67,11 +53,11 @@ public class MongoDbContext : IMongoDbContext
         return Database.GetCollection<T>(name ?? typeof(T).Name.ToLower());
     }
 
-    public async Task RollbackTransaction(CancellationToken cancellationToken = default)
-        => await Session?.AbortTransactionAsync(cancellationToken)!;
-
-    public Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
+    public void AddToTracker(IAggregateRoot aggregateRoot)
     {
-        throw new NotImplementedException();
+        _changeTracker.Add(aggregateRoot);
     }
+
+    public IEnumerable<IDomainEvent> GetDomainEvents()
+        => _changeTracker.Where(x => x.DomainEvents.Any()).SelectMany(x => x.DomainEvents);
 }

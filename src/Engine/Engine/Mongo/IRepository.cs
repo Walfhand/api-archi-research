@@ -16,11 +16,6 @@ public interface IReadRepository<TEntity, in TId>
         CancellationToken cancellationToken = default);
 
     Task<IReadOnlyList<TEntity>> GetAllAsync(CancellationToken cancellationToken = default);
-
-    public Task<IReadOnlyList<TEntity>> RawQuery(
-        string query,
-        CancellationToken cancellationToken = default,
-        params object[] queryParams);
 }
 
 public interface IWriteRepository<TEntity, in TId>

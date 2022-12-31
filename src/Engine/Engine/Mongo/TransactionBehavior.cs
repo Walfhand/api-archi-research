@@ -14,18 +14,10 @@ namespace Engine.Mongo
         }
         public async Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next, CancellationToken cancellationToken)
         {
-            await _dbContext.BeginTransactionAsync(cancellationToken);
-            try
-            {
-                var result = await next();
-                await _dbContext.CommitTransactionAsync(cancellationToken);
-                return result;
-            }
-            catch
-            {
-                await _dbContext.RollbackTransaction(cancellationToken);
-                throw;
-            }
+            var result = await next();
+            var domainEvents = _dbContext.GetDomainEvents();
+            //next dispatch events here
+            return result;
         }
     }
 }
