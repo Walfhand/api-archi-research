@@ -18,6 +18,7 @@ public class MongoRepository<TEntity, TId> : IMongoRepository<TEntity, TId>
 
     public async Task<TEntity> AddAsync(TEntity entity, CancellationToken cancellationToken = default)
     {
+        entity.CreatedAt = DateTime.Now;
         await DbSet.InsertOneAsync(entity, new InsertOneOptions(), cancellationToken);
         _context.AddToTracker(entity);
         return entity;

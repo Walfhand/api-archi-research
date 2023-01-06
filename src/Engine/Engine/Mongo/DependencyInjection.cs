@@ -1,5 +1,8 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using MongoDB.Bson.Serialization.Serializers;
+using MongoDB.Bson.Serialization;
+using MongoDB.Bson;
 
 namespace Engine.Mongo;
 public static class DependencyInjection
@@ -33,7 +36,6 @@ public static class DependencyInjection
         services.AddScoped<IMongoDbContext>(sp => sp.GetRequiredService<TContextService>());
 
         services.AddTransient(typeof(IMongoRepository<,>), typeof(MongoRepository<,>));
-
         return services;
     }
 }

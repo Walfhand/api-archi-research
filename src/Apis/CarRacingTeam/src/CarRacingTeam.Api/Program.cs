@@ -1,4 +1,5 @@
 using CarRacingTeam.Extensions.Infrastructure;
+using Engine.Mapping;
 using Engine.Swagger;
 using Engine.Web;
 
@@ -10,6 +11,7 @@ builder.Services.AddCustomSwagger();
 builder.Services.AddCustomVersioning();
 builder.Services.AddInfrastructure(builder.Configuration);
 builder.Services.AddMinimalEndpoints();
+builder.Services.AddMapping();
 
 var app = builder.Build();
 
