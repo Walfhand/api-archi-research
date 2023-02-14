@@ -16,6 +16,7 @@ builder.Services.AddMapping();
 var app = builder.Build();
 
 app.UseCustomSwagger();
+app.UseInfrastructure();
 app.MapMinimalEndpoints();
 
 

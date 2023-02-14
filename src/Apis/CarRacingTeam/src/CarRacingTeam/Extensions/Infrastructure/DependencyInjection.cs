@@ -1,5 +1,7 @@
 ﻿using CarRacingTeam.Data;
 using Engine.Mongo;
+using Hellang.Middleware.ProblemDetails;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -11,6 +13,13 @@ public static class DependencyInjection
         services.AddMongoDbContext<CarRacingTeamDbContext>(configuration);
         services.ConfigureEntities();
         services.AddCustomMediatR();
+        services.AddCustomProblemDetails();
         return services;
+    }
+
+    public static WebApplication UseInfrastructure(this WebApplication webApplication)
+    {
+        webApplication.UseProblemDetails();
+        return webApplication;
     }
 }
