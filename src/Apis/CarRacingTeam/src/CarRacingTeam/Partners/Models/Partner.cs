@@ -2,7 +2,7 @@
 using Engine.Core.Model;
 
 namespace CarRacingTeam.Partners.Models;
-public record Partner : AggregateRoot<Guid>
+public class Partner : AggregateRoot<Guid>
 {
     public string Name { get; set; }
     public PartnershipTypes PartnershipType { get; set; }

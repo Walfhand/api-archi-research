@@ -2,11 +2,11 @@
 
 namespace Engine.Core.Model;
 
-public abstract record AggregateRoot : AggregateRoot<Guid>
+public class AggregateRoot : AggregateRoot<Guid>
 {
 
 }
-public abstract record AggregateRoot<TId> : Audit, IAggregateRoot<TId>
+public abstract class AggregateRoot<TId> : Audit, IAggregateRoot<TId>
 {
     public TId Id { get; set; }
     public long Version { get; set; } = -1;

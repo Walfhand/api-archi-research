@@ -1,5 +1,5 @@
 ﻿namespace Engine.Core.Model;
-public abstract record Audit : IAudit
+public abstract class Audit : IAudit
 {
     public DateTime? CreatedAt { get; set; }
     public long? CreatedBy { get; set; }

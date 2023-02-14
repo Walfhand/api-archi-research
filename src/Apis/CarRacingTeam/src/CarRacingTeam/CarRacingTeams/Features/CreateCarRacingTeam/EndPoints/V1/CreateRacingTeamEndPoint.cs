@@ -25,5 +25,5 @@ public class CreateRacingTeamEndPoint : IMinimalEndpoint
 
     public static async Task<IResult> CreateCarRacingTeam([FromBody] CreateCarRacingTeamCommand command,
         IMediator mediator, CancellationToken cancellationToken)
-       => Results.Created("",await mediator.Send(command, cancellationToken));
+       => Results.Ok(await mediator.Send(command, cancellationToken));
 }

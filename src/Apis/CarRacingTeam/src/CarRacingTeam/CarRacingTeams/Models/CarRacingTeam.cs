@@ -1,7 +1,7 @@
 ﻿using Engine.Core.Model;
 
 namespace CarRacingTeam.CarRacingTeams.Models;
-public record CarRacingTeam : AggregateRoot<Guid>
+public class CarRacingTeam : AggregateRoot<Guid>
 {
     public string Name { get; private set; }
     public string Country { get; private set; }

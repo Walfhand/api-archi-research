@@ -2,7 +2,7 @@
 using Engine.Core.Model;
 
 namespace CarRacingTeam.Buildings.Models;
-public record Building : AggregateRoot<Guid>
+public class Building : AggregateRoot<Guid>
 {
     public Address Address { get; private set; }
     public int Area { get; private set; }

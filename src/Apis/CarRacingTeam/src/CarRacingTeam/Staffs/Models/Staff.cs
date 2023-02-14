@@ -1,7 +1,7 @@
 ﻿using Engine.Core.Model;
 
 namespace CarRacingTeam.Staffs.Models;
-public record Staff : AggregateRoot<Guid>
+public class Staff : AggregateRoot<Guid>
 {
     public string Name { get; private set; }
     public string Position { get; private set; }
