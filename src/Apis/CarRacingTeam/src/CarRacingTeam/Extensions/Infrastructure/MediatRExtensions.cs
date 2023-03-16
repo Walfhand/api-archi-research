@@ -1,4 +1,5 @@
-﻿using Engine.Mongo;
+﻿using Engine.Logging;
+using Engine.Mongo;
 using Engine.Validation;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
@@ -10,6 +11,7 @@ internal static class MediatRExtensions
     {
         services.AddMediatR(typeof(MediatRExtensions).Assembly);
         services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
+        services.AddTransient(typeof(IPipelineBehavior<,>), typeof(LoggingBehavior<,>));
         services.AddTransient(typeof(IPipelineBehavior<,>), typeof(TransactionBehavior<,>));
         return services;
     }

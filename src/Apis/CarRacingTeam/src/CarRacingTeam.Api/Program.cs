@@ -2,8 +2,13 @@ using CarRacingTeam.Extensions.Infrastructure;
 using Engine.Mapping;
 using Engine.Swagger;
 using Engine.Web;
+using Engine.Logging;
 
 var builder = WebApplication.CreateBuilder(args);
+var env = builder.Environment;
+
+builder.AddCustomSerilog(env);
+
 
 builder.Services.AddControllers();
 
