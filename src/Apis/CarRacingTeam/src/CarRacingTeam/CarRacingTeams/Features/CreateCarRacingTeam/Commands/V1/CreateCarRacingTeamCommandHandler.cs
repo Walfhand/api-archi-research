@@ -19,7 +19,6 @@ public class CreateCarRacingTeamCommandHandler : IRequestHandler<CreateCarRacing
     {
         var carRacingTeam = Models.CarRacingTeam.Create(request.Name, request.Country);
         await _repository.AddAsync(carRacingTeam, cancellationToken);
-        throw new DatabaseException("Blablablabla");
         return _mapper.Map<CreateCarRacingTeamResponseDto>(carRacingTeam);
     }
 }

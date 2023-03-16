@@ -24,7 +24,12 @@ namespace CarRacingTeam.Extensions.Infrastructure
                     Status = (int)ex.StatusCode,
                     Detail = ex.Message
                 });
-
+                x.Map<ValidationException>(ex => new ProblemDetails
+                {
+                    Title = ex.GetType().Name,
+                    Status = (int)ex.StatusCode,
+                    Detail = ex.Message
+                });
                 x.MapToStatusCode<ArgumentNullException>(StatusCodes.Status400BadRequest);
             });
             return services;
